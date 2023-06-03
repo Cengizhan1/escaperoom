@@ -68,7 +68,7 @@ php artisan serve
 You can find the API documentation here. 
 It provides detailed information on available routes and their usage.
 
-## Contributing
+## Contributers
 Cengizhan Yavuz \
 Email : cengizhany.cy@gmail.com
 ## License
