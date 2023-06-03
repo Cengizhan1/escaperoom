@@ -12,17 +12,15 @@ use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {
-    public function store(CreateBookingRequest $request)
+    public function store(CreateBookingRequest $request): \Illuminate\Http\JsonResponse
     {
         $validatedData = $request->validated();
-
         $escapeRoom = EscapeRoom::find($validatedData['escape_room_id']);
 
         if (!$escapeRoom) {
             throw ValidationException::withMessages(['escape_room_id' => 'Escape room not found.']);
         }
 
-        // Check if the escape room is available in the requested time slot
         $existingBooking = Booking::where('escape_room_id', $escapeRoom->id)
             ->where('time_slot', $validatedData['time_slot'])
             ->first();
@@ -30,8 +28,6 @@ class BookingController extends Controller
         if ($existingBooking) {
             throw ValidationException::withMessages(['time_slot' => 'The escape room is already booked for the requested time slot.']);
         }
-
-        // Check if the maximum number of participants is exceeded
         $bookingCount = Booking::where('escape_room_id', $escapeRoom->id)
             ->where('time_slot', $validatedData['time_slot'])
             ->count();
@@ -53,7 +49,6 @@ class BookingController extends Controller
 
         return response()->json(['message' => 'Booking created successfully.']);
     }
-
 
     public function index(): \Illuminate\Http\JsonResponse
     {

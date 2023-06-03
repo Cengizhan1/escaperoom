@@ -14,9 +14,9 @@ Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
 
-Route::delete('/users/{user}', [UserController::class, 'destroy']);
-Route::put('/users/{user}', [UserController::class, 'update']);
-Route::get('/users/{user}',  [UserController::class, 'show']);
+Route::delete('/user', [UserController::class, 'destroy']);
+Route::put('/user', [UserController::class, 'update']);
+Route::get('/user',  [UserController::class, 'show']);
 
 Route::post('/escape-rooms', [EscapeRoomController::class, 'store']);
 Route::get('/escape-rooms', [EscapeRoomController::class, 'index']);
