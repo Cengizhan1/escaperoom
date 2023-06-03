@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\RegisterUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -14,21 +16,10 @@ class AuthController extends Controller
     /**
      * Register a new user.
      *
-     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function register(Request $request)
+    public function register(RegisterUserRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users',
-            'password' => 'required|string|min:8',
-        ]);
-
-        if ($validator->fails()) {
-            return response()->json(['error' => $validator->errors()], 422);
-        }
-
         $user = User::create([
             'name' => $request->name,
             'email' => $request->email,
@@ -41,18 +32,13 @@ class AuthController extends Controller
     /**
      * Authenticate the user and generate a token.
      *
-     * @param Request $request
+     * @param LoginUserRequest $request
      * @return JsonResponse
      * @throws ValidationException
      */
-    public function login(Request $request): JsonResponse
+    public function login(LoginUserRequest $request): JsonResponse
     {
-        $this->validate($request, [
-            'email' => 'required|email',
-            'password' => 'required',
-        ]);
-
-        $credentials = $request->only('email', 'password');
+        $credentials = $request->validated();
 
         if (Auth::attempt($credentials)) {
             $user = Auth::user();
@@ -65,6 +51,7 @@ class AuthController extends Controller
             'email' => ['The provided credentials are incorrect.'],
         ]);
     }
+
 
     /**
      * Log the user out and invalidate the token.

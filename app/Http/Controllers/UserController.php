@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
@@ -29,10 +30,10 @@ class UserController extends Controller
      * Update the specified user in the database.
      *
      * @param int $id
-     * @param Request $request
+     * @param UpdateUserRequest $request
      * @return JsonResponse
      */
-    public function update(int $id, Request $request): JsonResponse
+    public function update(int $id, UpdateUserRequest $request): JsonResponse
     {
         $user = User::find($id);
 
@@ -40,11 +41,12 @@ class UserController extends Controller
             return response()->json(['error' => 'User not found.'], 404);
         }
 
-        $user->fill($request->all());
+        $user->fill($request->validated());
         $user->save();
 
         return response()->json($user, 200);
     }
+
 
     /**
      * Remove the specified user from the database.

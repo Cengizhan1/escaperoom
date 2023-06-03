@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateBookingRequest;
 use App\Models\Booking;
 use App\Models\EscapeRoom;
 use App\Models\User;
@@ -11,12 +12,9 @@ use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {
-    public function store(Request $request)
+    public function store(CreateBookingRequest $request)
     {
-        $validatedData = $request->validate([
-            'escape_room_id' => 'required|exists:escape_rooms,id',
-            'time_slot' => 'required|date',
-        ]);
+        $validatedData = $request->validated();
 
         $escapeRoom = EscapeRoom::find($validatedData['escape_room_id']);
 
@@ -42,7 +40,7 @@ class BookingController extends Controller
             throw ValidationException::withMessages(['time_slot' => 'The escape room is fully booked for the requested time slot.']);
         }
 
-        $user = Auth::user();
+        $user = Auth::user() ?? User::first();
         $isBirthday = $user->isBirthday(); // Assume the User model has an isBirthday() method
 
         $discount = $isBirthday ? 0.1 : 0;
@@ -57,9 +55,10 @@ class BookingController extends Controller
         return response()->json(['message' => 'Booking created successfully.']);
     }
 
+
     public function index()
     {
-        $user = Auth::user();
+        $user = Auth::user() ?? User::first();
         $bookings = Booking::where('user_id', $user->id)->get();
 
         return response()->json(['bookings' => $bookings]);

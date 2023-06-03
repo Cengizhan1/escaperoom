@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\CreateEscapeRoomRequest;
 use App\Models\EscapeRoom;
 use App\Models\TimeSlot;
 use Illuminate\Http\Request;
@@ -9,16 +10,9 @@ use Illuminate\Support\Facades\DB;
 
 class EscapeRoomController extends Controller
 {
-    public function store(Request $request)
+    public function store(CreateEscapeRoomRequest $request)
     {
-        $validatedData = $request->validate([
-            'theme' => 'required|string',
-            'maximum_participants' => 'required|integer',
-            'time_slots' => 'required|array',
-            'time_slots.*.start_time' => 'required|date_format:H:i',
-            'time_slots.*.end_time' => 'required|date_format:H:i',
-            'time_slots.*.max_participants' => 'required|integer',
-        ]);
+        $validatedData = $request->validated();
 
         try {
             DB::beginTransaction();
@@ -47,6 +41,7 @@ class EscapeRoomController extends Controller
             return response()->json(['error' => 'Escape room creation failed'], 500);
         }
     }
+
     public function index()
     {
         $escapeRooms = EscapeRoom::with('timeSlots')->get();
