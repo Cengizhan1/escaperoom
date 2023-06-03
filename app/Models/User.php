@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use Carbon\Carbon;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -43,4 +44,11 @@ class User extends Authenticatable implements MustVerifyEmail
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    public function isBirthday(): bool
+    {
+        $birthday = Carbon::createFromFormat('Y-m-d', $this->date_of_birth)->setTime(0, 0, 0);
+        $today = Carbon::today()->setTime(0, 0, 0);
+        return $birthday->isSameDay($today);
+    }
 }
