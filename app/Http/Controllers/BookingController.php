@@ -41,9 +41,8 @@ class BookingController extends Controller
         }
 
         $user = Auth::user() ?? User::first();
-        $isBirthday = $user->isBirthday(); // Assume the User model has an isBirthday() method
 
-        $discount = $isBirthday ? 0.1 : 0;
+        $discount = $user->isBirthday() ? 0.1 : 0;
 
         $booking = new Booking();
         $booking->user_id = $user->id;
