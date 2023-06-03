@@ -11,7 +11,7 @@ use Illuminate\Validation\ValidationException;
 
 class BookingController extends Controller
 {
-    public function createBooking(Request $request)
+    public function store(Request $request)
     {
         $validatedData = $request->validate([
             'escape_room_id' => 'required|exists:escape_rooms,id',
@@ -57,7 +57,7 @@ class BookingController extends Controller
         return response()->json(['message' => 'Booking created successfully.']);
     }
 
-    public function listBookings()
+    public function index()
     {
         $user = Auth::user();
         $bookings = Booking::where('user_id', $user->id)->get();
@@ -65,7 +65,7 @@ class BookingController extends Controller
         return response()->json(['bookings' => $bookings]);
     }
 
-    public function cancelBooking($id)
+    public function destroy($id)
     {
         $booking = Booking::find($id);
 

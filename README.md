@@ -68,6 +68,8 @@ php artisan serve
 You can find the API documentation here. 
 It provides detailed information on available routes and their usage.
 
+https://api.postman.com/collections/16991416-faf754f7-59f8-4d8f-bbeb-3adf6ff5df24?access_key=PMAT-01H1ZBAVZEC5J2WY4FQWBCS9DV
+
 ## Contributers
 Cengizhan Yavuz \
 Email : cengizhany.cy@gmail.com
