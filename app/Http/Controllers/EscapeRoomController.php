@@ -10,18 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class EscapeRoomController extends Controller
 {
-    public function store(CreateEscapeRoomRequest $request)
+    public function store(CreateEscapeRoomRequest $request): \Illuminate\Http\JsonResponse
     {
         $validatedData = $request->validated();
 
         try {
             DB::beginTransaction();
-
             $escapeRoom = EscapeRoom::create([
                 'theme' => $validatedData['theme'],
                 'maximum_participants' => $validatedData['maximum_participants'],
             ]);
-
             $timeSlots = [];
             foreach ($validatedData['time_slots'] as $timeSlotData) {
                 $timeSlots[] = new TimeSlot([
@@ -30,46 +28,28 @@ class EscapeRoomController extends Controller
                     'max_participants' => $timeSlotData['max_participants'],
                 ]);
             }
-
             $escapeRoom->timeSlots()->saveMany($timeSlots);
-
             DB::commit();
-
             return response()->json($escapeRoom, 201);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json(['error' => 'Escape room creation failed'], 500);
         }
     }
-
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         $escapeRooms = EscapeRoom::with('timeSlots')->get();
-
         return response()->json($escapeRooms);
     }
 
-    public function show($id)
+    public function show(EscapeRoom $escapeRoom): \Illuminate\Http\JsonResponse
     {
-        $escapeRoom = EscapeRoom::find($id);
-
-        if (!$escapeRoom) {
-            return response()->json(['error' => 'Escape room not found'], 404);
-        }
-
         return response()->json($escapeRoom);
     }
 
-    public function timeSlots($id)
+
+    public function timeSlots(EscapeRoom $escapeRoom)
     {
-        $escapeRoom = EscapeRoom::find($id);
-
-        if (!$escapeRoom) {
-            return response()->json(['error' => 'Escape room not found'], 404);
-        }
-
-        $timeSlots = $escapeRoom->timeSlots;
-
-        return response()->json($timeSlots);
+        return response()->json($escapeRoom->timeSlots);
     }
 }

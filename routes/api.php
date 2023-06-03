@@ -18,12 +18,11 @@ Route::delete('/users/{user}', [UserController::class, 'destroy']);
 Route::put('/users/{user}', [UserController::class, 'update']);
 Route::get('/users/{user}',  [UserController::class, 'show']);
 
-
-
 Route::post('/escape-rooms', [EscapeRoomController::class, 'store']);
 Route::get('/escape-rooms', [EscapeRoomController::class, 'index']);
-Route::get('/escape-rooms/{id}', [EscapeRoomController::class, 'show']);
-Route::get('/escape-rooms/{id}/time-slots', [EscapeRoomController::class, 'timeSlots']);
+Route::get('/escape-rooms/{escapeRoom}', [EscapeRoomController::class, 'show']);
+Route::get('/escape-rooms/{escapeRoom}/time-slots', [EscapeRoomController::class, 'timeSlots']);
+
 Route::post('/bookings', [BookingController::class, 'store']);
 Route::get('/bookings', [BookingController::class, 'index']);
 Route::delete('/bookings/{id}', [BookingController::class, 'destroy']);

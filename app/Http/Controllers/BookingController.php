@@ -56,7 +56,7 @@ class BookingController extends Controller
     }
 
 
-    public function index()
+    public function index(): \Illuminate\Http\JsonResponse
     {
         $user = Auth::user() ?? User::first();
         $bookings = Booking::where('user_id', $user->id)->get();
@@ -64,16 +64,9 @@ class BookingController extends Controller
         return response()->json(['bookings' => $bookings]);
     }
 
-    public function destroy($id)
+    public function destroy(Booking $booking): \Illuminate\Http\JsonResponse
     {
-        $booking = Booking::find($id);
-
-        if (!$booking) {
-            throw ValidationException::withMessages(['id' => 'Booking not found.']);
-        }
-
         $booking->delete();
-
         return response()->json(['message' => 'Booking canceled successfully.']);
     }
 }
