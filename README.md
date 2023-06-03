@@ -16,12 +16,12 @@ This project provides an API for managing Escape Room reservations.
 1. Clone the project:
 
 ```
-git clone https://github.com/your-username/escape-room-api.git
+git clone https://github.com/Cengizhan1/escaperoom.git
 ``` 
 2. Navigate to the project directory:
 
 ```
-cd escape-room-api
+cd escaperoom
 ``` 
 3. Install the dependencies:
 
