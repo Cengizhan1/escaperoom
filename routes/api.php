@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BookingController;
 use App\Http\Controllers\EscapeRoomController;
+use App\Http\Controllers\UserController;
 use App\Models\Booking;
 use App\Models\EscapeRoom;
 use App\Models\User;
@@ -12,11 +13,13 @@ use Illuminate\Support\Facades\Route;
 Route::post('/register', [AuthController::class, 'register']);
 Route::post('/login', [AuthController::class, 'login']);
 Route::post('/logout', [AuthController::class, 'logout']);
-Route::get('/test', function () {
-    $booking = Booking::factory()->create();
-    return $booking;
 
-});
+Route::delete('/users/{user}', [UserController::class, 'destroy']);
+Route::put('/users/{user}', [UserController::class, 'update']);
+Route::get('/users/{user}',  [UserController::class, 'show']);
+
+
+
 Route::post('/escape-rooms', [EscapeRoomController::class, 'store']);
 Route::get('/escape-rooms', [EscapeRoomController::class, 'index']);
 Route::get('/escape-rooms/{id}', [EscapeRoomController::class, 'show']);

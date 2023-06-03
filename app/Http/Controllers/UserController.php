@@ -12,58 +12,37 @@ class UserController extends Controller
     /**
      * Display the specified user.
      *
-     * @param int $id
+     * @param User $user
      * @return JsonResponse
      */
-    public function show(int $id): JsonResponse
+    public function show(User $user): JsonResponse
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found.'], 404);
-        }
-
         return response()->json($user, 200);
     }
 
     /**
      * Update the specified user in the database.
-     *
-     * @param int $id
+     * @param User $user
      * @param UpdateUserRequest $request
      * @return JsonResponse
      */
-    public function update(int $id, UpdateUserRequest $request): JsonResponse
+    public function update(User $user, UpdateUserRequest $request): JsonResponse
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found.'], 404);
-        }
-
         $user->fill($request->validated());
         $user->save();
-
         return response()->json($user, 200);
     }
-
 
     /**
      * Remove the specified user from the database.
      *
-     * @param int $id
+     * @param User $user
      * @return JsonResponse
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy(User $user): JsonResponse
     {
-        $user = User::find($id);
-
-        if (!$user) {
-            return response()->json(['error' => 'User not found.'], 404);
-        }
-
         $user->delete();
-
         return response()->json(['message' => 'User deleted.'], 200);
     }
+
 }
